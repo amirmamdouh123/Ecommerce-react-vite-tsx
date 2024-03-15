@@ -1,6 +1,6 @@
 import Category from "@components/Ecommerce/Category/Category";
 import { useCallback, useEffect } from "react";
-import { Col,Row, Container } from "react-bootstrap";
+import {  Container } from "react-bootstrap";
 import { useAppDispatch,useAppSelector } from "@store/hooks";
 import getCategories from "@store/categories/AsyncAction/actGetCategories";
 import {Loading} from "@components/feedback";

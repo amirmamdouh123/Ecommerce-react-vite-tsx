@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@store/hooks";
 import getProducts from "@store/products/AsyncAction/getProducts"
-import { Col, Container ,Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { productsCleanUp } from "@store/products/productsSlice";
 import {Loading} from "@components/feedback";
 import GridList from "@components/common/GridList/GridList";
@@ -16,7 +16,8 @@ function Products(){
     const {prefix} = useParams()
 
     useEffect(()=>{
-        const reultDispatch =dispatch(getProducts(prefix as string))
+        // const reultDispatch =
+        dispatch(getProducts(prefix as string))
         // reultDispatch.unwrap().then((d)=>console.log(d));
         
         return () => { dispatch(productsCleanUp())

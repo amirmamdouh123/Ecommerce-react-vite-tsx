@@ -19,7 +19,7 @@ const route = createBrowserRouter([
         element:<AboutUs/>},
       { path:'products/:prefix',
         element:<Products />,
-        loader:({params})=>{  
+        loader:({params})=>{           //guarding
           if(!/^[a-z | -]+$/.test(params.prefix as string)){//error params.prefix may be string or undefined          
           const ResponseBody = {errorType:'Bad Request',prefix: params.prefix}  //hbda mn 3ndi
           const headers= new Headers({

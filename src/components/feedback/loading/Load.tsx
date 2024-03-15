@@ -13,7 +13,7 @@ function Loading({status,error ,children} : TLoading){
     if(status==='failed'){
         throw new Response(null,{
             status:400,
-            statusText:error as string
+            statusText:error as string,
         })
     }
     if(status ==='pending')

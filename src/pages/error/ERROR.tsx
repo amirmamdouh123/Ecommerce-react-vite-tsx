@@ -1,7 +1,7 @@
 import ErrorSVG from '@assets/svg/error.svg?react'
 import './errorStyle.css'
 import { Container } from 'react-bootstrap'
-import { Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';/* isRouteErrorResponse ,*/ 
 
 type TErrorResponse={
     status:string ,
@@ -10,7 +10,6 @@ type TErrorResponse={
 } | undefined
 
 function ERROR(){
-
 
     const errorResponse = useRouteError() as TErrorResponse ; //gets the error response 
                                            //it may the response of the guarding or mismatching url.
