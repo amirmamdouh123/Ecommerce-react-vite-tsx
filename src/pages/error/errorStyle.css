@@ -1,0 +1,20 @@
+.errorContainer{
+    height: 50vh;
+    width: 1400px;
+    margin: 500px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;        
+}
+
+.errorContainer a{
+    font-size: 20px;
+  
+}
+
+.errorContainer .errorType{
+    font-size: 50px;
+}
+.errorContainer .errorText{
+    font-size: 20px;
+}

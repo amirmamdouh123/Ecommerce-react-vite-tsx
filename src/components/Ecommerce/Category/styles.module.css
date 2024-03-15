@@ -1,0 +1,32 @@
+.categoryCSS{
+    width: 180px;
+    height: 180px;
+    margin: 30px;cursor: pointer;
+}
+
+.categoryImg{
+    width: 180px;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: #f2f2f2;
+}
+.categoryImg img{
+    height: 180px;
+    width: auto;
+    width: 100%;
+}
+
+.categoryTitle{
+text-align: center;
+font-size: 14px;
+margin-top: 10px;
+text-decoration: none;
+color: darkcyan;
+text-transform:capitalize ;
+font-weight: bolder;
+}
+.categoryTitle :hover{
+    text-decoration: underline;
+    color: olivedrab;
+}
