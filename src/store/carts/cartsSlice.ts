@@ -1,40 +1,35 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { RootstateType } from "@store/Store";
-import { IOneProduct } from "src/types/TResponseProduct";
+import {  createSlice } from "@reduxjs/toolkit";
+import { TResponseCarts } from "src/types/TCart";
+import { TProduct } from "src/types/TProduct";
 
-export type TInitialState={
-    items: {[key:number]:number},
-    productFullInfo: IOneProduct[],
-}
-
-const initialState :TInitialState ={
+const initialState :TResponseCarts ={
     items: {},          // items =[{id:quantity}]
-    productFullInfo:[],
+    productFullInfo:{},
+    status:'idle'
 }
 const cartSlice = createSlice({
     name:"cart",
     initialState:initialState,
     reducers:{
-        addToCart:(state,action)=>{  //action.payload = id
-            if(state.items[action.payload.id]){
-                state.items[action.payload.id]++
-            }else{
-                state.items[action.payload.id]=1
-            }
-
+        addToCart: (state :TResponseCarts , action :{type:string ,payload:TProduct})=>{  //action.payload = productItem   
+            const productId = action.payload.id;    
+            const previousQuantity= state.items[productId] ?? 0;
+            state.items[productId] = previousQuantity+1
+            state.productFullInfo[productId]={...action.payload , quantity: previousQuantity+1}
         },
-        decrementFromCart:(state,action)=>{  //action.payload = id
-            if(state.items[action.payload.id]>1){
-                state.items[action.payload.id]--
-            }else{
-                delete state.items[action.payload.id]
-            }
-
+        quantityChange:(state,action)=>{  //payload -> {id , newQuantity}
+            const productId = action.payload.id;    
+            const newQuantity = action.payload.newQuantity;
+            state.items[productId] = newQuantity;
+            state.productFullInfo[productId] = {...state.productFullInfo[productId]  , quantity: newQuantity }
+        },
+        deleteFromCart:(state,action)=>{  //payload -> id
+            const productId =action.payload;
+            delete state.items[productId]
+            delete state.productFullInfo[productId]
         }
     }
 })
 
-
-
-export const {addToCart , decrementFromCart} = cartSlice.actions;
+export const {addToCart , quantityChange ,deleteFromCart} = cartSlice.actions;
 export default cartSlice.reducer;

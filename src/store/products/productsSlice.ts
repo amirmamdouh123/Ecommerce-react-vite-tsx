@@ -1,42 +1,38 @@
 import { createSlice } from "@reduxjs/toolkit/react";
 import getProducts from "./AsyncAction/getProducts";
-import { IProductState} from "src/types/TResponseProduct";
+import { TResponseProducts ,TProduct} from "src/types/TProduct";
 
-const initialState :IProductState= {
-    records:[],
-    loading:'idle',
-    error : null
-} 
+const initialState :TResponseProducts= {
+    items:[],
+    error:null,
+    status:'idle'
+}
 const productSlice = createSlice({
-    name:'products',
-    initialState,
+    name:'product',
+    initialState:initialState,
     reducers:{
-        addProduct:(state: IProductState,action )=>{
-            state.records.push(action.payload)
-        },
-        productsCleanUp:(state: IProductState)=>{
-            state.records=[]
+        clearProducts:(state,_)=>{
+            state.items=[]
         }
-    }
-    ,extraReducers:(builder)=>{
-        builder.addCase(getProducts.pending,(productState,_)=>{
-                productState.error=null;
-                productState.loading="pending";
+    },extraReducers:(builder)=>{
+        builder.addCase(getProducts.pending,(state,_)=>{
+            state.error=null;
+            state.status='pending'
+        }),
+        builder.addCase(getProducts.fulfilled,(state,action)=>{
+            if(action.payload!=undefined){
+                state.items= action.payload
+            }
+            state.status='succeed'
+        }),
+        builder.addCase(getProducts.rejected,(state,action)=>{
+            if(action.payload!=null){
+                state.error= action.payload as string
+            }
+            state.status='failed'
         })
-        ,
-        builder.addCase(getProducts.fulfilled,(productState :IProductState, action )=>{
-            productState.loading="succeed";
-            if(Array.isArray(action.payload))
-                productState.records = action.payload 
-    }),
-    builder.addCase(getProducts.rejected,(productState :IProductState,action )=>{
-        productState.loading="failed";
-        if(typeof action.payload ==="string"){
-            productState.error = action.payload
-        }
-})
     }
 })
 
-export default productSlice.reducer;
-export const { addProduct ,productsCleanUp} = productSlice.actions;
+export default productSlice.reducer
+export const {clearProducts} =productSlice.actions

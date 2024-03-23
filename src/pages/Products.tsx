@@ -1,50 +1,50 @@
-import Product from "@components/Ecommerce/Product/Product";
-import { useCallback, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
-import getProducts from "@store/products/AsyncAction/getProducts"
-import { Container } from "react-bootstrap";
-import { productsCleanUp } from "@store/products/productsSlice";
-import {Loading} from "@components/feedback";
 import GridList from "@components/common/GridList/GridList";
-import { IOneProduct } from "src/types/TResponseProduct";
-function Products(){
+import Loading from "@components/common/feedback/Loading";
+import { Product } from "@components/index";
+import { useAppDispatch, useAppSelector } from "@store/hooks";
+import getProducts from "@store/products/AsyncAction/getProducts";
+import { clearProducts } from "@store/products/productsSlice";
+import { useEffect } from "react";
+import { Col, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { TProduct } from "src/types/TProduct";
 
-    const dispatch = useAppDispatch()
-    const productState = useAppSelector((state)=> state.product)
+function Products(){
+    console.log('products run');
+
+    const {prefix} =useParams()
+    const dispatch =useAppDispatch()
+    const products =useAppSelector((state)=>state.product)
+    const carts =useAppSelector((state)=>state.cart)
     
-    const {prefix} = useParams()
+    const productsWithQuantity = products.items.map((item)=>{
+        const quantity = carts.items[item.id]
+        
+        return {...item ,quantity: quantity??0 }
+    })
 
     useEffect(()=>{
-        // const reultDispatch =
         dispatch(getProducts(prefix as string))
-        // reultDispatch.unwrap().then((d)=>console.log(d));
-        
-        return () => { dispatch(productsCleanUp())
+
+        return () =>{
+            dispatch(clearProducts(0))
         }
-    },[dispatch,prefix])
+    },[])
 
-// console.log(productState);
-
-
-    // const productsTSX = productState.records?.map((product)=>{
-    //     return ( <Col xs={3} key={product.id} className="d-flex justify-content-center mb-5 mt-2 " >
-    //             <Product  {...product} />
-    //         </Col>)
-    //     }) 
-
-    const renderElement = useCallback((product:IOneProduct)=>
-    {return (<Product  {...product} />)},[])
-  
-    return(
-        <Container>
-            <Loading error={productState.error} status={productState.loading}>
-
-            <GridList records={productState.records} renderElement={renderElement} />
-
+    const renderProduct = (item :TProduct)=>{
+        return (<Col xs={3} key={item.id} className="d-flex justify-content-center mb-5 mt-2 ">
+                    <Product {...item} />
+                </Col>)
+    }
+    const LoadingProps= {error:products.error , status: products.status}
+    return (<div>
+        <h1>Products</h1>
+            <Loading {...LoadingProps}>
+                <Row>
+                    <GridList<TProduct> items={productsWithQuantity} renderLoop={renderProduct} />
+                </Row>
             </Loading>
-        </Container>
+        </div>
     )
 }
-
 export default Products;

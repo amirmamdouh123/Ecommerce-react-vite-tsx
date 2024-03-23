@@ -1,40 +1,44 @@
-import { Button } from 'react-bootstrap';
+import { TProduct } from "src/types/TProduct";
 import styles from './styles.module.css'
-import { IOneProduct } from 'src/types/TResponseProduct';
-import { useAppDispatch, useAppSelector } from '@store/hooks';
-import { addToCart, decrementFromCart } from '@store/carts/cartsSlice';
-const {PlusMinusButtonCSS,productCSS, productImg ,productTitle ,buttonStyle} = styles 
-
-function Product({id ,title ,img ,price }:IOneProduct){ 
-    const dispatch =useAppDispatch()
-    const cartState =useAppSelector((state)=>state.cart)
-
-    // const disblePiusMinusCart=(id:number):boolean=>{
-    //         return !cartState.items[id]
-    // }
-
-    const handleAddCart=({id,price}:  {id:number , price:number})=>{
-        dispatch(addToCart({id,price}));
-    }
-    const handleDecrementCart=({id,price}:  {id:number , price:number})=>{
-        dispatch(decrementFromCart({id,price}));
-    }
+import { Button } from "react-bootstrap";
+import { useAppDispatch } from "@store/hooks";
+import { addToCart } from "@store/carts/cartsSlice";
+import React, { useEffect, useState } from "react";
+const {productCSS,productImg, productTitle,buttonStyle,amountCSS}=styles
+function Product({id, title , img  ,price,max,quantity}:TProduct){
     
+    console.log('one Product run');
 
-    return (<>
-    <div className={productCSS}>
+    const dispatch =useAppDispatch()
+    const [reachMaxQuantity ,setReachMaxQuantity] =useState(false)
+    const quantityNumber = quantity??0;
+
+    useEffect(()=>{
+        if(quantityNumber>=max){
+            setReachMaxQuantity(true)
+        }
+    },[quantityNumber])
+
+
+    const handleAddCart=()=>{     
+        if(!reachMaxQuantity) {     
+            dispatch(addToCart({id, title , img  ,price,max,quantity: quantityNumber +1} ))
+        }
+    }
+
+    return (<div className={productCSS}>
+
         <div className={productImg}>
-            <img src={img} alt="dd" />
+            <img src={img} alt="" />
         </div>
-        <h4 className={productTitle}>{title}</h4>
-        <p >Price: {price} EGP</p>
-
-        <Button onClick={()=>{handleAddCart({id,price})}} className={buttonStyle} variant='info' style={{color:'white'}}>Add to Cart</Button><br/>
-        {cartState.items[id] &&<>
-                <Button onClick={()=>{handleAddCart({id,price})}} className={PlusMinusButtonCSS} variant='info' style={{color:'white'}}>+</Button>
-                <Button onClick={()=>{handleDecrementCart({id,price})}} className={PlusMinusButtonCSS} variant='info' style={{color:'white'}}>-</Button>
-                </>}
-        </div>
-        </>)
+        <h3 className={productTitle}>
+            {title}
+        </h3>
+        <p>Price {price}.00 EGP</p>
+        <p className={amountCSS}>{max -quantityNumber} items remains </p>
+        <Button disabled={reachMaxQuantity} onClick={()=>{handleAddCart()}} className={buttonStyle} variant='info' style={{color:'white'}}>Add to Cart</Button>
+    </div>)
 }
-export default Product;
+
+export default React.memo(Product)
+

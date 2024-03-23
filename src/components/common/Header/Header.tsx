@@ -4,6 +4,8 @@ import StoreSVG from '@components/Ecommerce/HeaderSVG/BasketSVG';
 import { NavLink } from 'react-router-dom';
 function Header(){
 
+
+  
  return( <header>
   
   <h1> <span>our</span>  <Badge bg='info'>Ecom</Badge></h1>

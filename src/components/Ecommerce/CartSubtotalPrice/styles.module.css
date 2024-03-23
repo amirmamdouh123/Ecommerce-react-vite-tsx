@@ -1,0 +1,10 @@
+.subTotalContainerCSS{
+    display: flex;
+    justify-content: space-between;
+}
+span{
+    font-size: 18px;
+    font-weight: bolder;
+    text-transform:capitalize ;
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}

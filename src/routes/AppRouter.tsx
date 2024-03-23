@@ -1,10 +1,11 @@
 import MainLayout from '@layouts/MainLayout/MainLayout.tsx'
 import { createBrowserRouter  } from 'react-router-dom';
 import Home from '@pages/Home.tsx';
-import Categories from '@pages/Categories.tsx';
+import Categories from '@pages/Categories';
 import AboutUs from '@pages/AboutUs.tsx';
 import Products from '@pages/Products.tsx';
 import Error from '@pages/error/ERROR.tsx'
+import Cart from '@pages/Carts';
 
 
 const route = createBrowserRouter([
@@ -17,6 +18,8 @@ const route = createBrowserRouter([
         element:<Categories/>},
       { path:'AboutUs',
         element:<AboutUs/>},
+      { path:'Cart',
+        element:<Cart />},
       { path:'products/:prefix',
         element:<Products />,
         loader:({params})=>{           //guarding

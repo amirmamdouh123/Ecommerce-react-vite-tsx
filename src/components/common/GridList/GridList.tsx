@@ -1,22 +1,20 @@
-import React from "react"
-import { Col, Row } from "react-bootstrap"
-import { baseElement } from "src/types/shared"
+import { Col, Row } from "react-bootstrap";
+import { baseElement } from "src/types/sharedTypes";
 
-type GridProps<T extends baseElement>={
-    records: T[],
-    renderElement:(record:T)=>React.JSX.Element
+type GridListType<T extends baseElement>={
+    items: T[],
+    renderLoop:(item : T)=>React.ReactNode
 }
 
-function GridList<T extends baseElement>({records , renderElement} : GridProps<T>  ){
-    const TSX = records.map((element)=>{
-        return (<Col xs={3} key={element.id} className="d-flex justify-content-center mb-5 mt-2 " >
-                    {renderElement(element)}
-                </Col>)
-    })
+function GridList<ElementType extends baseElement>({items, renderLoop}:GridListType<ElementType>){
+    const elementTSX = items.map((el)=>{
+        return ( <div key={el.id}>  
+                    {renderLoop({...el})} 
+                </div>)
+    });
+    
 
-    return (<Row>
-        {TSX}
-        </Row>)
+    return (elementTSX)
 }
 
-export default GridList
+export default GridList;

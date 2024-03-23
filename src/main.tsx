@@ -3,12 +3,14 @@ import { RouterProvider  } from 'react-router-dom';
 import route from '@routes/AppRouter'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
-import  store from '@store/Store'
-
+import {store,persistedStore} from '@store/Store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.createRoot(document.getElementById('root')!)
 .render(
-<Provider store={store}>
-<RouterProvider router={route} />
-</Provider>,
+    <Provider store={store} >
+        <PersistGate loading={null} persistor={persistedStore} >
+            <RouterProvider router={route} />
+        </PersistGate>
+    </Provider>
 )
