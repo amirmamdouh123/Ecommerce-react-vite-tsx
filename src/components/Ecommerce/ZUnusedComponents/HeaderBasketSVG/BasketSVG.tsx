@@ -22,7 +22,8 @@ function  BasketSVG(){
     return (
         <div className={basketCSS} onClick={()=>{navigate('/cart')}}>
                 <StoreSVG className={storesvgCSS} />
-                <div className={basketQuantityStyle}>{itemCount}</div>
+                {itemCount>0? <div className={basketQuantityStyle}>{itemCount}</div> : null}
+                <span style={{marginLeft:'5px'}}>Cards</span>
         </div>
     )
 }

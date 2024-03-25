@@ -6,7 +6,8 @@ export type TProduct ={
     img:string,
     price:number,
     max:number,
-    quantity?:number
+    quantity?:number,
+    isLiked?:boolean
 }
 
 export type TResponseProducts=TRespone<TProduct>

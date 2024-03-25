@@ -8,9 +8,7 @@ type GridListType<T extends baseElement>={
 
 function GridList<ElementType extends baseElement>({items, renderLoop}:GridListType<ElementType>){
     const elementTSX = items.map((el)=>{
-        return ( <div key={el.id}>  
-                    {renderLoop({...el})} 
-                </div>)
+        return  renderLoop({...el})  
     });
     
 

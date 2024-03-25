@@ -5,6 +5,7 @@ export type TCart = TProduct
 export type TResponseCarts = 
 {
     items:{[id:number]:number},
-    productFullInfo: {[id:number]:TProduct}
-    status:'idle'|'succeed'
+    productFullInfo: TProduct[],
+    status:'idle' | 'pending' | 'failed' | 'succeed',
+    error:string | null
 }

@@ -4,9 +4,12 @@
     height: 370px;
     border: 1px solid #f2f2f2;
     border-radius: 20px;
-    /* display: flex;
+    position: relative;
+    display: flex;
     flex-direction: column;
-   */
+    justify-content: center;
+    align-items: center;
+  
 }
 
 .productImg{
@@ -18,9 +21,9 @@
     margin-left: 10px;
 }
 .productImg img{
-    height: 180px;
-    width: auto;
-    width: 100%;}
+    height: 100%;
+    width: 100%;
+}
 
 .productTitle{
 width: 160px;
@@ -33,7 +36,7 @@ margin-left: 10px;
 
 .buttonStyle{
 margin: 10px;
-width: 85px;
+width: 140px;
 font-size: 15px;
 }
 
@@ -41,9 +44,24 @@ p{
     text-align: center;
 }
 
-
-
 .amountCSS{
     color: cornflowerblue;
     font-size: 13px;
+}
+
+.LikeCSS{
+    width: 30px;
+    height: 30px;
+    position:absolute;
+    top: 8px;
+    right: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+.LikeCSS:hover{
+    background-color: #f2f2f2;
 }

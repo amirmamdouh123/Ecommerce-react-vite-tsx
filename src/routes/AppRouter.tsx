@@ -6,7 +6,7 @@ import AboutUs from '@pages/AboutUs.tsx';
 import Products from '@pages/Products.tsx';
 import Error from '@pages/error/ERROR.tsx'
 import Cart from '@pages/Carts';
-
+import WishItems from '@pages/wishItems'
 
 const route = createBrowserRouter([
     {path:'/' , element:<MainLayout />,
@@ -37,26 +37,8 @@ const route = createBrowserRouter([
         }
           return true
          }
-
-        //  loader:( { params } )=>{
-        //   if(typeof params.prefix !=='string' || 
-        //   !/^[a-z]+$/.test(params.prefix)){
-        //     const headers =new Headers({
-        //         'Content-Type': 'application/json',
-        //         'Custom-Header': 'Custom-Value'
-        //     })
-        //     const ResponseBody = { type :'Bad Requset',
-        //                             prefix:params.prefix }
-
-        //     throw new Response(JSON.stringify(ResponseBody),{
-        //         status:400,
-        //         statusText:'Category is not Found'
-        //         ,headers:headers
-        //     }) 
-        //   }
-        //      return true;
-        //  }
-      }
+      },
+      {path:'/wishlist' , element:<WishItems />}
     ]}
   ])
 

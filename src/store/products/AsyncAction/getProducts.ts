@@ -6,10 +6,8 @@ import { TProduct } from "src/types/TProduct";
     'products/getProducts',
         async (prefix:string,AsycThunk)=>{
             const {rejectWithValue}=AsycThunk
-            try{
-                console.log(`http://localhost:9090/${prefix}`);
-                
-            const products= await axios.get<TProduct[]>(`http://localhost:9090/${prefix}`)
+            try{                
+            const products= await axios.get<TProduct[]>(`http://localhost:9090/products?cat_prefix=${prefix}`)
             const data = products.data;
             return data
             }catch(error){

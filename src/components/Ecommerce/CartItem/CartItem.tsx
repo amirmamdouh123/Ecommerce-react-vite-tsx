@@ -23,8 +23,6 @@ function CartItem({ id,title,img ,price,quantity ,max}:TProduct){
     }
 
     const deleteFromCartHandle=()=>{
-        console.log("deleteItem");
-        
         dispatch(deleteFromCart(id))
     }
     return (

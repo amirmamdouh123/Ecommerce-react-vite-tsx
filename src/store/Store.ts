@@ -3,18 +3,20 @@ import{persistReducer,persistStore,FLUSH,REHYDRATE,PAUSE,PERSIST,PURGE,REGISTER}
 import storage from "redux-persist/lib/storage";
 import categoryReducer from "./categories/categoriesSlice";
 import cartReducer from  "./carts/cartsSlice";
+import wishlistReducer from "./wishlist/wishlist";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 const combinedReducers = combineReducers(
     {
     category:categoryReducer,
     product:productReducer,
-    cart:cartReducer
+    cart:cartReducer,
+    wishlist:wishlistReducer
 })
 
 const persistCofig= {
     key:'cart',
     storage,
-    whitelist:['cart']
+    whitelist:['cart' ,'wishlist']
 }
 
 const persistedReducers = persistReducer(persistCofig,combinedReducers)
