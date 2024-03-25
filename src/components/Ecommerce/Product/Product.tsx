@@ -1,40 +1,66 @@
-import { Button } from 'react-bootstrap';
+import { TProduct } from "src/types/TProduct";
 import styles from './styles.module.css'
-import { IOneProduct } from 'src/types/TResponseProduct';
-import { useAppDispatch, useAppSelector } from '@store/hooks';
-import { addToCart, decrementFromCart } from '@store/carts/cartsSlice';
-const {PlusMinusButtonCSS,productCSS, productImg ,productTitle ,buttonStyle} = styles 
+import { Button, Spinner } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { addToCart } from "@store/carts/cartsSlice";
+import React, { useEffect, useState } from "react";
+import LikeSVG from "@assets/svg/like.svg?react"
+import LikeFill from "@assets/svg/like-fill.svg?react"
 
-function Product({id ,title ,img ,price }:IOneProduct){ 
+import IsLikeOrDis from "@store/wishlist/AsyncAction/LikeOrDisLike";
+
+const {productCSS,productImg, productTitle,buttonStyle,amountCSS , LikeCSS}=styles
+function Product({id, title , img  ,price,max,quantity ,isLiked}:TProduct){
+
     const dispatch =useAppDispatch()
-    const cartState =useAppSelector((state)=>state.cart)
+    const [reachMaxQuantity ,setReachMaxQuantity] =useState(false)
+    const [isLoading,setIsLoading] = useState(false);
+    const quantityNumber = quantity??0;
 
-    // const disblePiusMinusCart=(id:number):boolean=>{
-    //         return !cartState.items[id]
-    // }
+    useEffect(()=>{
+        if(quantityNumber>=max){
+            setReachMaxQuantity(true)
+        }
+    },[quantityNumber])
 
-    const handleAddCart=({id,price}:  {id:number , price:number})=>{
-        dispatch(addToCart({id,price}));
-    }
-    const handleDecrementCart=({id,price}:  {id:number , price:number})=>{
-        dispatch(decrementFromCart({id,price}));
-    }
+    // console.log("id: "+id + " quantity: "+quantityNumber +" max: "+max );
     
 
-    return (<>
-    <div className={productCSS}>
-        <div className={productImg}>
-            <img src={img} alt="dd" />
-        </div>
-        <h4 className={productTitle}>{title}</h4>
-        <p >Price: {price} EGP</p>
+    const handleAddCart=()=>{  
+        if(!reachMaxQuantity) {
+            dispatch(addToCart({id, title , img  ,price,max,quantity: quantityNumber} ))
 
-        <Button onClick={()=>{handleAddCart({id,price})}} className={buttonStyle} variant='info' style={{color:'white'}}>Add to Cart</Button><br/>
-        {cartState.items[id] &&<>
-                <Button onClick={()=>{handleAddCart({id,price})}} className={PlusMinusButtonCSS} variant='info' style={{color:'white'}}>+</Button>
-                <Button onClick={()=>{handleDecrementCart({id,price})}} className={PlusMinusButtonCSS} variant='info' style={{color:'white'}}>-</Button>
-                </>}
+            setIsLoading(true);
+            setTimeout(()=>{
+                setIsLoading(false); 
+            },400)  
+        }
+    }
+
+    const handleLikeToggle=()=>{  
+        setIsLoading(true);      
+        dispatch(IsLikeOrDis({id, title , img  ,price,max,quantity: quantityNumber ,isLiked})).unwrap().then((_)=>{ setIsLoading(false)})   // _ is the state
+    }
+
+    return (<div className={productCSS}>
+
+        <div className={productImg}>
+            <div className={LikeCSS}>
+                {isLoading? <Spinner animation="border" size="sm" variant="primary" /> : isLiked?<LikeFill  onClick={handleLikeToggle}/>: <LikeSVG onClick={handleLikeToggle}  /> }
+            </div>
+            <img src={img} alt="" />
         </div>
-        </>)
+        <h3 className={productTitle}>
+            {title}
+        </h3>
+        <p style={{fontSize:'13px'}}>Price {price}.00 EGP</p>
+        <p className={amountCSS}>{max -quantityNumber} items remains </p>
+        <Button disabled={reachMaxQuantity || isLoading} onClick={()=>{handleAddCart()}} className={buttonStyle} variant='info' style={{color:'white'}}>
+            {isLoading && <Spinner animation="border" size="sm" variant="primary" />}Add to Cart
+             </Button>
+    
+    </div>)
 }
-export default Product;
+
+export default React.memo(Product)
+

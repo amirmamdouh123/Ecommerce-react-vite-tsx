@@ -1,34 +1,6 @@
-/* header{
-    width: 100%;
-    height: auto;
-    background-color: cadetblue;
+.ourEcomStyle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.buttons{
-    width: 60%;
-    height: auto;
-    margin: auto;
-    background-color: black;
-}
-
-.header .active{
-    color: cadetblue;
-}
-
-a{
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    margin:50px;
-    font-size: 30px;
-} */
-
-/* .footer{
-    width: 100%;
-    height: auto;
-    background-color: antiquewhite;
-    text-align: center;
-    font-size: 40px;
-    font-weight: bolder;
-} */
-
 

@@ -1,23 +1,21 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IProductState } from "src/types/TResponseProduct";
+import { TProduct } from "src/types/TProduct";
 
-
-
-const getProducts = createAsyncThunk('products/getProducts',async (category: string,ApiThunk)=>{
-    const {rejectWithValue} =ApiThunk
-    try{
-    const response = await axios.get<IProductState>(`http://localhost:9090/${category}`)
-    const data= response.data;
-    return data;     //payload
-    }
-    catch(error){
-        if(axios.isAxiosError(error)){
-        return rejectWithValue(error.response?.data.message || error.message)
-        }
-        else
-        return rejectWithValue("unexpected Error")
-    }
-})
+ const getProducts =createAsyncThunk(
+    'products/getProducts',
+        async (prefix:string,AsycThunk)=>{
+            const {rejectWithValue}=AsycThunk
+            try{                
+            const products= await axios.get<TProduct[]>(`http://localhost:9090/products?cat_prefix=${prefix}`)
+            const data = products.data;
+            return data
+            }catch(error){
+                if(axios.isAxiosError(error))
+                   return rejectWithValue(error.response?.data.message || error.message)
+                else
+                   return rejectWithValue("unexpected Error..")
+            }
+        })
 
 export default getProducts;

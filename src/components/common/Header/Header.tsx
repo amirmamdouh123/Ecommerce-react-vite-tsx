@@ -1,12 +1,20 @@
 import './Header.css'
 import { Badge, Container, Nav, Navbar } from 'react-bootstrap';
-import StoreSVG from '@components/Ecommerce/HeaderSVG/BasketSVG';
-import { NavLink } from 'react-router-dom';
-function Header(){
 
- return( <header>
+
+import { NavLink } from 'react-router-dom';
+import HeaderSVGContainer from '@components/common/Header/HeaderSVGContainer/HeaderSVGContainer';
+function Header(){
+  console.log("header run");
   
-  <h1> <span>our</span>  <Badge bg='info'>Ecom</Badge></h1>
+ return( <header>
+
+  <div className='ourEcomStyle'>
+    <h1> <span>our</span>  <Badge bg='info'>Ecom</Badge></h1>
+    
+    <HeaderSVGContainer />
+  </div>
+
   <Navbar expand="lg" className="bg-body-tertiary" bg='dark' >
     <Container >
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -16,7 +24,6 @@ function Header(){
           <Nav.Link as={NavLink} to='categories'>Categories</Nav.Link>
           <Nav.Link as={NavLink} to='aboutus'>About</Nav.Link>
         </Nav>
-        <StoreSVG />
 
         <Nav>
           <Nav.Link href="#home">Login</Nav.Link>

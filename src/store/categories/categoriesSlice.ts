@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit/react";
-import getCategories from "./AsyncAction/actGetCategories";
-import { IcategoriesState } from "src/types/TResponseCategory";
+import getCategories from "./AsyncAction/getCategoies";
+import { TCateogry ,TResponseCategories } from "src/types/TCategory";
 
 interface IAction{
     type:string,
@@ -8,9 +8,9 @@ interface IAction{
 }
 
 
-const initialState :IcategoriesState={
-    records:[],
-    loading: 'idle',
+const initialState :TResponseCategories={
+    items:[],
+    status: 'idle',
     error:null
 }
 
@@ -19,28 +19,29 @@ const categoriesSlice = createSlice({
     name:'categories',
     initialState,
     reducers:{
-        addProduct:(state: IcategoriesState,action :IAction)=>{
-            state.records.push(action.payload)
+        addProduct:(state,action :IAction)=>{
+            state.items.push(action.payload)
         },
-    },
-    extraReducers:(builder)=>{
-        builder.addCase(getCategories.pending, (state :IcategoriesState)=>{
-            state.loading= "pending"
-            state.error=null;         //if there was error before remove it
-        })
-
-        builder.addCase(getCategories.fulfilled, (state:IcategoriesState,action :IAction)=>{
-            state.records = action.payload.data
-            state.loading= "succeed"
-        })
-
-        builder.addCase(getCategories.rejected, (state:IcategoriesState,action :IAction)=>{
-            state.loading= "failed"
-            if(typeof action.payload==='string')
-                state.error = action.payload 
+    },extraReducers:(builder)=>{
+        builder.addCase(getCategories.pending,(state,action)=>{
+            state.error=null;
+            state.status='pending'
+        }),
+        builder.addCase(getCategories.fulfilled,(state,action)=>{
+            if(action.payload!=undefined){
+                state.items= action.payload
+            }
+            state.status='succeed'
+        }),
+        builder.addCase(getCategories.rejected,(state,action)=>{
+            if(action.payload!=null){
+                state.error= action.payload as string
+            }
+            state.status='failed'
         })
 
     }
+
 })
 
 export default categoriesSlice.reducer;

@@ -1,0 +1,47 @@
+.basketCSS{
+    position: relative;
+    cursor: pointer;
+    align-self: flex-end;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.storesvgCSS{
+    height: 35px;
+    width: auto;
+}
+.basketQuantityCSS{
+    height: 22px;
+    width: 22px;
+    background-color: #0dcaf0;
+    border-radius: 20px;
+    position: absolute;
+    top: -9px;
+    right: 42px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.pumpCartQuantityCSS{
+    animation: pumping 300ms ease-out
+}
+
+@keyframes pumping {
+    
+    0%{
+        transform: scale(1);
+    }
+    20%{
+        transform: scale(1.5);
+    }
+    30%{
+        transform: scale(1.6);
+    }
+    50%{
+        transform: scale(1.7);
+    }
+    100%{
+        transform: scale(1.2);
+    }
+}

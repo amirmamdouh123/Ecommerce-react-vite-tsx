@@ -1,40 +1,58 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { RootstateType } from "@store/Store";
-import { IOneProduct } from "src/types/TResponseProduct";
+import {  createSlice } from "@reduxjs/toolkit";
+import { TResponseCarts } from "src/types/TCart";
+import { TProduct } from "src/types/TProduct";
+import getCartItems from "./AsyncActions/getCartItems";
+import { act } from "react-dom/test-utils";
 
-export type TInitialState={
-    items: {[key:number]:number},
-    productFullInfo: IOneProduct[],
-}
-
-const initialState :TInitialState ={
+const initialState :TResponseCarts ={
     items: {},          // items =[{id:quantity}]
     productFullInfo:[],
+    status:'idle',
+    error:null
 }
 const cartSlice = createSlice({
     name:"cart",
     initialState:initialState,
     reducers:{
-        addToCart:(state,action)=>{  //action.payload = id
-            if(state.items[action.payload.id]){
-                state.items[action.payload.id]++
-            }else{
-                state.items[action.payload.id]=1
-            }
-
+        addToCart: (state :TResponseCarts , action :{type:string ,payload:TProduct})=>{  //action.payload = productItem   
+            const productId = action.payload.id;    
+            const previousQuantity= state.items[productId]??0; //first time to add cart -> it's not exists inside the cartList
+            state.items[productId] = previousQuantity+1
         },
-        decrementFromCart:(state,action)=>{  //action.payload = id
-            if(state.items[action.payload.id]>1){
-                state.items[action.payload.id]--
-            }else{
-                delete state.items[action.payload.id]
+        quantityChange:(state,action)=>{  //payload -> {id , newQuantity}
+            const productId = action.payload.id;    
+            const newQuantity = action.payload.newQuantity;
+            state.items[productId] = newQuantity;
+            state.productFullInfo[productId] = {...state.productFullInfo[productId]  , quantity: newQuantity }
+        },
+        deleteFromCart:(state,action)=>{  //payload -> id
+            const productId =action.payload;
+            delete state.items[productId]
+            state.productFullInfo=state.productFullInfo.filter((el)=> el.id !==productId)
+        },
+        cleanproductFullInfo:(state)=>{
+            state.productFullInfo=[]
+        },
+    },extraReducers:(builder)=>{
+        builder.addCase(getCartItems.pending,(state,action)=>{
+            state.error=null;
+            state.status='pending'
+        })
+        builder.addCase(getCartItems.fulfilled,(state,action)=>{
+            if(action.payload !=undefined){
+                state.productFullInfo=action.payload
             }
+            state.status='succeed'
 
-        }
+        }),
+        builder.addCase(getCartItems.rejected,(state,action)=>{
+            if(typeof action.payload ==='string' ){
+                state.error=action.payload;
+            }
+            state.status='failed'
+        })
     }
 })
 
-
-
-export const {addToCart , decrementFromCart} = cartSlice.actions;
+export const {addToCart , quantityChange ,deleteFromCart ,cleanproductFullInfo} = cartSlice.actions;
 export default cartSlice.reducer;
