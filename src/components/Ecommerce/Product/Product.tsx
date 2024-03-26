@@ -1,7 +1,7 @@
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
 import styles from './styles.module.css'
 import { Button, Spinner } from "react-bootstrap";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { useAppDispatch } from "@store/index";
 import { addToCart } from "@store/carts/cartsSlice";
 import React, { useEffect, useState } from "react";
 import LikeSVG from "@assets/svg/like.svg?react"
@@ -12,6 +12,8 @@ import IsLikeOrDis from "@store/wishlist/AsyncAction/LikeOrDisLike";
 const {productCSS,productImg, productTitle,buttonStyle,amountCSS , LikeCSS}=styles
 function Product({id, title , img  ,price,max,quantity ,isLiked}:TProduct){
 
+    console.log("product");
+    
     const dispatch =useAppDispatch()
     const [reachMaxQuantity ,setReachMaxQuantity] =useState(false)
     const [isLoading,setIsLoading] = useState(false);

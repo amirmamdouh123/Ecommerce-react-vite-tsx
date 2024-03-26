@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {TWishlist} from 'src/types/TWishlist'
 import IsLikeOrDis from '@store/wishlist/AsyncAction/LikeOrDisLike'
-import { TProduct } from "src/types/TProduct";
+import { TProduct ,isString } from "@types";
 import getWishlist from "./AsyncAction/getWishlistInfo";
 import { TStatus } from "src/types/sharedTypes";
 
@@ -54,14 +54,17 @@ const wishlistSlice = createSlice({
             state.status='pending'
         })
         builder.addCase(getWishlist.fulfilled,(state,action)=>{
-            if(action.payload !=undefined){
+            if(action.payload !=undefined && action.payload.length>0){
                 state.productFullInfo=action.payload
+                state.status='succeed'
             }
-            state.status='succeed'
+            else{
+                state.status='idle'
 
+            }
         }),
         builder.addCase(getWishlist.rejected,(state,action)=>{
-            if(typeof action.payload ==='string' ){
+            if(isString(action.payload)){
                 state.error=action.payload;
             }
             state.status='failed'

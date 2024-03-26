@@ -3,7 +3,7 @@ import Heading from "@components/common/Heading/Heading";
 import Loading from "@components/common/feedback/Loading";
 import { Product } from "@components/index";
 import { Col, Row } from "react-bootstrap";
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
 import useProducts from 'src/hooks/useProducts'
 
 

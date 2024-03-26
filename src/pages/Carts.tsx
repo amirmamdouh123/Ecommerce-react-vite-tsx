@@ -3,7 +3,7 @@ import GridList from "@components/common/GridList/GridList";
 import Loading from "@components/common/feedback/Loading";
 import { CartItem } from "@components/index";
 
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
 import useCarts from "@hooks/useCarts";
 function Carts(){
     const {cart,LoadingProps,cartItemsList} =useCarts()

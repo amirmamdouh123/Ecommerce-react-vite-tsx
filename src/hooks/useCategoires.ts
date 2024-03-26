@@ -1,11 +1,6 @@
-import GridList from "@components/common/GridList/GridList";
-import Loading from "@components/common/feedback/Loading";
-import { Category } from "@components/index";
 import getCategories from "@store/categories/AsyncAction/getCategoies";
-import { useAppDispatch, useAppSelector } from "@store/hooks";
+import { useAppDispatch, useAppSelector } from "@store/index";
 import { useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
-import { TCateogry } from "src/types/TCategory";
 
 
 function useCategories(){
@@ -14,7 +9,11 @@ function useCategories(){
     const categories =useAppSelector((state)=>state.category)
     
     useEffect(()=>{
-        dispatch(getCategories())
+       const promise= dispatch(getCategories())
+   
+       return ()=>{
+        promise.abort() 
+       }
     },[dispatch])
     const LoadingProps= {error:categories.error , status: categories.status}
 

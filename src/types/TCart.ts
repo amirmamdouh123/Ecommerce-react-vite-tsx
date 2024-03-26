@@ -1,5 +1,4 @@
 import { TProduct } from "./TProduct";
-import { TRespone } from "./sharedTypes";
 
 export type TCart = TProduct
 export type TResponseCarts = 

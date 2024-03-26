@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
 import { TWishlist } from "src/types/TWishlist";
+import isAxiosErrorHandler from "src/utils/isAxiosErrorHandler";
 
 const getWishlist=createAsyncThunk(
     'cart/getWishlist',
     async (items : TWishlist[] , AsyncAPI)=>{
-        const {rejectWithValue} =AsyncAPI
+        const {rejectWithValue ,signal} =AsyncAPI
         try{
             const productIds =items.map((wishItem)=>{
                 const wishItemId =wishItem.itemId;
@@ -16,16 +17,11 @@ const getWishlist=createAsyncThunk(
                 return []
             }
             // get these products
-            const respone = await axios.get<TProduct[]>(`http://localhost:9090/products?${productIds}`)
+            const respone = await axios.get<TProduct[]>(`http://localhost:9090/products?${productIds}` ,{signal})
             return respone.data      
         }
         catch(error){
-            if(axios.isAxiosError(error)){
-                return rejectWithValue(error.response?.data.message ||error.message)
-            }
-            else{
-                return rejectWithValue('unexpected error')
-            }
+           return rejectWithValue(isAxiosErrorHandler(error))
         }
     }
 
