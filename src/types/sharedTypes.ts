@@ -1,3 +1,5 @@
+import React, { ReactNode } from "react"
+
 export type TRespone<T>={
     items:T[],
     status:TStatus,
@@ -14,5 +16,7 @@ export type baseElement={
 export type TLoading= {
     status:TStatus,
     error:string |null,
-    children : React.ReactNode
+    children : React.ReactNode,
+    type: 'category' | 'product'| 'cart' //| 'wishlist'
 }
+

@@ -11,7 +11,7 @@ function Categories(){
 
     return (<div>
         <h1>Categories</h1>
-        <Loading {...LoadingProps}>
+        <Loading {...LoadingProps} type='category'>
             <Row>
                 <GridList<TCateogry> 
                 items={categories.items} 

@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
 import { TWishlist  } from "src/types/TWishlist";
+import isAxiosErrorHandler from "src/utils/isAxiosErrorHandler";
 
 const IsLikeOrDis =createAsyncThunk('wishlist/getItem',
         async (itemData : TProduct ,ApiThunck)=>{
@@ -20,12 +21,8 @@ const IsLikeOrDis =createAsyncThunk('wishlist/getItem',
                 return {type:'add', itemData:itemData}
             }
         }catch(error){
-            if(axios.isAxiosError(error)){ //not found -> like -> insert from db
-                return rejectWithValue(error.response?.data.message ||error.message)
-            }
-            else
-                return rejectWithValue('unexpected error')
-        }
-    })
+          return  rejectWithValue( isAxiosErrorHandler(error)   )
+    }
+})
 
 export default IsLikeOrDis;

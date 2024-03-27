@@ -1,8 +1,8 @@
 import {  createSlice } from "@reduxjs/toolkit";
 import { TResponseCarts } from "src/types/TCart";
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
 import getCartItems from "./AsyncActions/getCartItems";
-import { act } from "react-dom/test-utils";
+import { isString } from "src/types/guards";
 
 const initialState :TResponseCarts ={
     items: {},          // items =[{id:quantity}]
@@ -39,14 +39,18 @@ const cartSlice = createSlice({
             state.status='pending'
         })
         builder.addCase(getCartItems.fulfilled,(state,action)=>{
-            if(action.payload !=undefined){
+            if(action.payload !=undefined && action.payload.length>0){
                 state.productFullInfo=action.payload
+                state.status='succeed'
             }
-            state.status='succeed'
+            else{
+                state.status='idle'
+
+            }
 
         }),
         builder.addCase(getCartItems.rejected,(state,action)=>{
-            if(typeof action.payload ==='string' ){
+            if(isString(action.payload)){
                 state.error=action.payload;
             }
             state.status='failed'

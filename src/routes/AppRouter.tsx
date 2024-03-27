@@ -1,44 +1,46 @@
+import {Suspense, lazy} from 'react';
 import MainLayout from '@layouts/MainLayout/MainLayout.tsx'
 import { createBrowserRouter  } from 'react-router-dom';
-import Home from '@pages/Home.tsx';
-import Categories from '@pages/Categories';
-import AboutUs from '@pages/AboutUs.tsx';
-import Products from '@pages/Products.tsx';
+
 import Error from '@pages/error/ERROR.tsx'
-import Cart from '@pages/Carts';
-import WishItems from '@pages/wishItems'
+import { isCategory } from 'src/types/index';
+import { LottieHandlerr } from '@components/common';
+
+const Home = lazy(()=>import('@pages/Home.tsx'))
+const Categories = lazy(()=>import('@pages/Categories'))
+const AboutUs = lazy(() => import('@pages/AboutUs.tsx'));
+const Products = lazy(() => import('@pages/Products.tsx'));
+const Cart = lazy(() => import('@pages/Carts'));
+const WishItems = lazy(() => import('@pages/wishItems'));
+
+const fallback =LottieHandlerr({lottieType:'loading'})
+
 
 const route = createBrowserRouter([
     {path:'/' , element:<MainLayout />,
     errorElement:<Error />
     ,children:[
       { index:true 
-        , element:<Home />},
-      { path:'Categories', 
-        element:<Categories/>},
+        , element:<Suspense fallback={fallback}><Home /></Suspense>},
+      { path:'categories', 
+        element:<Suspense fallback={fallback}><Categories/></Suspense>},
       { path:'AboutUs',
-        element:<AboutUs/>},
+        element:<Suspense fallback={fallback}>  <AboutUs/>  </Suspense>},
       { path:'Cart',
-        element:<Cart />},
+        element:<Suspense fallback={fallback}>  <Cart /> </Suspense>},
+      
+      {path:'/wishlist' , element: <Suspense fallback={fallback}> <WishItems /> </Suspense>},
+
       { path:'products/:prefix',
-        element:<Products />,
-        loader:({params})=>{           //guarding
-          if(!/^[a-z | -]+$/.test(params.prefix as string)){//error params.prefix may be string or undefined          
-          const ResponseBody = {errorType:'Bad Request',prefix: params.prefix}  //hbda mn 3ndi
-          const headers= new Headers({
-                 'Content-Type': 'application/json',
-                 'Custom-Header': 'Custom-Value'
-                          })
-            throw new Response(JSON.stringify(ResponseBody),{   //error
-              status:400,
-              statusText:"Category is not found",
-              headers:headers
-            })
-        }
+        element:<Suspense fallback={fallback}><Products /></Suspense>,
+        loader:(({params})=>{
+          if(!isCategory(params.prefix as string)){
+            throw new Response('Bad Request',{status:404,statusText:'Category is not found'})
+          }
           return true
-         }
-      },
-      {path:'/wishlist' , element:<WishItems />}
+        })
+      
+      }
     ]}
   ])
 

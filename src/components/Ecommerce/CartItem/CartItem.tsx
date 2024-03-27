@@ -1,7 +1,7 @@
 import { Button, Container ,Form } from "react-bootstrap"
-import { TProduct } from "src/types/TProduct"
+import { TProduct } from '@types'
 import styles from './style.module.css'
-import { useAppDispatch } from "@store/hooks"
+import { useAppDispatch } from "@store/index"
 import { quantityChange ,deleteFromCart } from "@store/carts/cartsSlice"
 import React from "react"
 const {cartItem,product,productImg,productInfo} = styles 

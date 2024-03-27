@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { TProduct } from "src/types/TProduct";
+import { TProduct } from "@types";
+import isAxiosErrorHandler from "src/utils/isAxiosErrorHandler";
 
 const getCartItems=createAsyncThunk(
     'cart/getCartItems',
@@ -19,13 +20,10 @@ const getCartItems=createAsyncThunk(
         }
         catch(error){
             if(axios.isAxiosError(error)){
-                return rejectWithValue(error.response?.data.message ||error.message)
-            }
-            else{
-                return rejectWithValue('unexpected error')
-            }
+                rejectWithValue(isAxiosErrorHandler(error))
         }
     }
+}
 
 )
 export default getCartItems;

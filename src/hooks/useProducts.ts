@@ -1,12 +1,10 @@
-import { useAppDispatch, useAppSelector } from "@store/hooks";
-import getProducts from "@store/products/AsyncAction/getProducts";
+import { useAppDispatch, useAppSelector } from "@store/index";
+import {getProducts} from "@store/index";
 import { clearProducts } from "@store/products/productsSlice";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 function useProducts(){
-
-    console.log('products run');
 
     const {prefix} =useParams()
     const dispatch =useAppDispatch()
@@ -25,13 +23,12 @@ function useProducts(){
     })})
 
     useEffect(()=>{
-        dispatch(getProducts(prefix as string))
-
+        const promise= dispatch(getProducts(prefix as string))
         return () =>{
+            promise.abort()
             dispatch(clearProducts(0))
         }
     },[]);
-
 
     const LoadingProps= {error:products.error , status: products.status}
    

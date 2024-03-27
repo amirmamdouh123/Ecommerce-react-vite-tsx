@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit/react";
 import getCategories from "./AsyncAction/getCategoies";
-import { TCateogry ,TResponseCategories } from "src/types/TCategory";
+import { TResponseCategories } from "src/types/TCategory";
+import { isString } from "src/types/guards";
 
 interface IAction{
     type:string,
@@ -28,14 +29,17 @@ const categoriesSlice = createSlice({
             state.status='pending'
         }),
         builder.addCase(getCategories.fulfilled,(state,action)=>{
-            if(action.payload!=undefined){
+            if(action.payload!=undefined &&action.payload.length>0 ){
                 state.items= action.payload
+                state.status='succeed'
             }
-            state.status='succeed'
+            else{
+                state.status='idle'
+            }
         }),
         builder.addCase(getCategories.rejected,(state,action)=>{
-            if(action.payload!=null){
-                state.error= action.payload as string
+            if(isString(action.payload)){
+                state.error= action.payload 
             }
             state.status='failed'
         })
@@ -43,6 +47,8 @@ const categoriesSlice = createSlice({
     }
 
 })
+
+
 
 export default categoriesSlice.reducer;
 export const { addProduct } = categoriesSlice.actions;

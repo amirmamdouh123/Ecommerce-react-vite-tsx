@@ -1,7 +1,7 @@
 import { useAppSelector } from "@store/hooks"
 import { useEffect, useState } from "react"
 import { Container } from "react-bootstrap"
-import { TProduct } from "src/types/TProduct"
+import { TProduct } from "@types"
 import styles from './styles.module.css'
 
 const {subTotalContainerCSS}= styles

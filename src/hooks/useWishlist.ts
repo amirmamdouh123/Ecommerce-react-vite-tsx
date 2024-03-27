@@ -1,12 +1,7 @@
-import GridList from "@components/common/GridList/GridList"
-import Loading from "@components/common/feedback/Loading"
-import { Product } from "@components/index"
-import { useAppDispatch, useAppSelector } from "@store/hooks"
+import { useAppDispatch, useAppSelector } from "@store/index"
 import getWishlist from "@store/wishlist/AsyncAction/getWishlistInfo"
 import { clearWishlistInfo } from "@store/wishlist/wishlist"
-import { useCallback, useEffect } from "react"
-import { Col, Row } from "react-bootstrap"
-import { TProduct } from "src/types/TProduct"
+import {  useEffect } from "react"
 
 function useWishItems(){
     const dispatch =useAppDispatch()
@@ -15,8 +10,9 @@ function useWishItems(){
     const cartQuantityItems =useAppSelector((state)=>state.cart)
 
     useEffect(()=>{
-        dispatch(getWishlist(wishlist.wishItems))
+        const promise =dispatch(getWishlist(wishlist.wishItems))
         return()=>{
+            promise.abort()
             dispatch(clearWishlistInfo())
         }
     },[dispatch,wishlist.wishItems])
