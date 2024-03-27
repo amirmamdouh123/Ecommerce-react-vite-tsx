@@ -6,8 +6,6 @@ import { useParams } from "react-router-dom";
 
 function useProducts(){
 
-    console.log('products run');
-
     const {prefix} =useParams()
     const dispatch =useAppDispatch()
     const products =useAppSelector((state)=>state.product)
@@ -26,13 +24,11 @@ function useProducts(){
 
     useEffect(()=>{
         const promise= dispatch(getProducts(prefix as string))
-
         return () =>{
             promise.abort()
             dispatch(clearProducts(0))
         }
     },[]);
-
 
     const LoadingProps= {error:products.error , status: products.status}
    

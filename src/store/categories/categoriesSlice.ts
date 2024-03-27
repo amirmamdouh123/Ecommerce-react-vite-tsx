@@ -29,8 +29,13 @@ const categoriesSlice = createSlice({
             state.status='pending'
         }),
         builder.addCase(getCategories.fulfilled,(state,action)=>{
-            state.items= action.payload
-            state.status='succeed'
+            if(action.payload!=undefined &&action.payload.length>0 ){
+                state.items= action.payload
+                state.status='succeed'
+            }
+            else{
+                state.status='idle'
+            }
         }),
         builder.addCase(getCategories.rejected,(state,action)=>{
             if(isString(action.payload)){

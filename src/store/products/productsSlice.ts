@@ -21,16 +21,20 @@ const productSlice = createSlice({
             state.status='pending'
         }),
         builder.addCase(getProducts.fulfilled,(state,action)=>{
-            if(action.payload!=undefined){
+            if(action.payload!=undefined &&action.payload.length>0 ){
                 state.items= action.payload
+                state.status='succeed'
             }
-            state.status='succeed'
+            else{
+                state.status='idle'
+            }
         }),
         builder.addCase(getProducts.rejected,(state,action)=>{
             if(isString(action.payload)){
                 state.error= action.payload
             }
             state.status='failed'
+            throw new Response('Bad Requset',{status:404 ,statusText:state.error as string})
         })
     }
 })

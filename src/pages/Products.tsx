@@ -12,7 +12,7 @@ function Products(){
 
     return (<div>
         <Heading>{prefix + " Products"}</Heading>
-            <Loading {...LoadingProps}>
+            <Loading {...LoadingProps} type='product'>
                 <Row>
                  <GridList<TProduct> items={productsWithQuantityAndLiked} renderLoop={(item)=><Col xs={3}> <Product {...item}/> </Col>} />
                 </Row>

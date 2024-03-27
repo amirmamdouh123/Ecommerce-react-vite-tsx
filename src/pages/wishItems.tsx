@@ -11,7 +11,7 @@ function wishItems(){
     
     
     return (<div>
-        <Loading status={wishlist.status} error={wishlist.error} >
+        <Loading status={wishlist.status} error={wishlist.error} type='product' >
             <Row>
                 <GridList<TProduct> items={wishItemsList} renderLoop={(item)=> <Col xs={3} > <Product {...item} quantity={cartQuantityItems.items[item.id]} isLiked={true} />   </Col>  }/>
             </Row>

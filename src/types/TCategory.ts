@@ -7,4 +7,7 @@ export type TCateogry ={
     
 }
 
+export type cat_prefix = 'men-shirts' | 'men-shoes' | 'women-shoes' | 'womens-watches'
+
+
 export type TResponseCategories=TRespone<TCateogry>

@@ -4,4 +4,5 @@ import { type TCateogry} from './TCategory'
 import { type TProduct}from './TProduct'
 import {type TWishlist} from './TWishlist'
 import { isString } from './guards'
-export {TCateogry, TRespone , TProduct , TCart , TWishlist ,isString}
+import { isCategory } from './guards'
+export {TCateogry, TRespone , TProduct , TCart , TWishlist ,isString ,isCategory}
